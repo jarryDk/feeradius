@@ -1,0 +1,76 @@
+= FreeRADIUS using Google Authenticator
+
+== Build base FreeRADIUS images
+
+This images is based on `fedora:35`
+
+.buildBaseFreeRadius.sh
+[source, bash]
+----
+podman build -f Dockerfile.basefreeradius -t basefreeradius .
+----
+
+== Build FreeRADIUS images with modifications
+
+.buildFreeRadius.sh
+
+[source, bash]
+----
+podman build -f Dockerfile -t freeradius .
+----
+
+== Start the container
+
+.runFreeRadius.sh
+
+[source, bash]
+----
+podman run -it --rm --privileged --log-level=debug \
+  --name freeradius1 \
+  --hostname freeradius1.dk \
+  -p 1812:1812/udp \
+  -p 1813:1813/udp \
+  -p 18120:18120/udp freeradius
+----
+
+== Run bash in the container
+
+.bashFreeRadius.sh
+
+[source, bash]
+----
+podman exec -it freeradius1 /bin/bash
+----
+
+== Generate .google_authenticator file
+
+Use `bashFreeRadius.sh` to log into the server a do
+
+[source, bash]
+----
+su micbn google_authenticator
+----
+
+follow the steps in `google_authenticator`
+
+[source, bash]
+----
+cat /home/micbn/.google_authenticator
+----
+
+add content of `/home/micbn/.google_authenticator` into this project `.google_authenticator`
+
+== Update clients
+
+Add new client to the end of the file `clients.conf`
+
+
+== Links
+
+- https://freeradius.org/[FreeRADIUS]
+- https://networkjutsu.com/freeradius-google-authenticator/[Adding Two-Factor Authentication to FreeRADIUS]
+- https://networkjutsu.com/ssh-google-authenticator/[Securing SSH with Google Authenticator]
+- https://networkjutsu.com/freeradius-docker/[Migrated FreeRADIUS with Google Authenticator to a Docker container]
+- https://github.com/google/google-authenticator-libpam[Google Authenticator PAM module]
+
+- http://tinyradius.sourceforge.net/[TinyRadius: Java Radius library]

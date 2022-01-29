@@ -1,0 +1,9 @@
+FROM fedora:35
+
+# Update & upgrades
+RUN dnf update -y
+
+# Install FreeRADIUS and Google Authenticator
+RUN dnf install freeradius google-authenticator -y
+
+RUN dnf clean all -y
