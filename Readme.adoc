@@ -60,9 +60,35 @@ cat /home/micbn/.google_authenticator
 
 add content of `/home/micbn/.google_authenticator` into this project `.google_authenticator`
 
+CAUTION: No not share you `.google_authenticator` file ;o)
+
 == Update clients
 
 Add new client to the end of the file `clients.conf`
+
+
+== Test the setup
+
+`radtest <user> <password+google authenticator token> <host> <port> <RADIUS secret key>`
+
+.Request
+[source, bash]
+----
+radtest micbn micbnpassword4321177250 localhost 18120 testing1234
+----
+
+.Response
+[source]
+----
+Sent Access-Request Id 21 from 0.0.0.0:45421 to 127.0.0.1:1812 length 91
+        User-Name = "micbn"
+        User-Password = "micbnpassword4321177250"
+        NAS-IP-Address = 192.168.0.118
+        NAS-Port = 18120
+        Message-Authenticator = 0x00
+        Cleartext-Password = "micbnpassword4321177250"
+Received Access-Accept Id 21 from 127.0.0.1:1812 to 127.0.0.1:45421 length 20
+----
 
 
 == Links
